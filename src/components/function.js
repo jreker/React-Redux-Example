@@ -1,63 +1,64 @@
+//video tut: https://www.youtube.com/watch?v=Td-2D-_7Y2E&list=PLoYCgNOIyGABj2GQSlDRjgvXtqfDxKm5b&index=20
+
+
 import React from 'react';
 import { applyMiddleware, createStore } from 'redux';
+import {createLogger} from 'redux-logger';
+import thunk from "redux-thunk";
+import Axios from 'axios';
+//import { composeWithDevTools } from 'redux-devtools-extension';
+
+
+//Default states ( you can use it for the UI)
+const initialState = {
+    fetching: false,
+    fetched: false,
+    users: [],
+    error: null,
+}
 
 //change state
-const reducer = function(state, action) {
-    if(action.type === "INC") {
-        return state+action.payload;
-    }
-    else if(action.type === "DEC") {
-        return state-action.payload;
-    } else if(action.type=== "E") {
-        throw new Error("Test");
-    }
-
+const reducer = function(state=initialState, action) {
+    switch(action.type) {
+        case "FETCH_USERS_START": {
+            return {...state, fetching: true}
+            break;
+        }case "FETCH_USERS_RECIEVED": {
+            return {...state, fetching: false, fetched: true, users: action.payload}
+            break;
+        }case "FETCH_USERS_ERROR": {
+            return {...state, fetching: false, error: action.payload}
+            break;
+        }
+    }    
     return state;
 }
-//------------------------------
 
-//Middleware runs between every action
-const logger = (store) => (next) => (action) => {
-    console.log("action fired", action);
-    //we can also modify the action if we want to
-    //action.type = "DEC";
-    //no action will be run till we call it via next
-    next(action);
-};
 
-const error = (store) => (next) => (action) => {
-    console.log("action fired", action);
+const middleware = applyMiddleware(thunk, createLogger());
+const store = createStore(reducer, middleware);
 
-    try{
-        next(action);
-    } catch(e) {
-        console.log("HELP!!",e);
-    }
-    
-};
+
+//Asynchronous calls from thunks
+store.dispatch((dispatch) => {
+    dispatch({type: "FETCH_USERS_START"})
+    Axios.get("http://rest.learncode.academy/api/wstern/users")
+        .then((response) => {
+            dispatch({type: "FETCH_USERS_RECIEVED", payload: response.data})
+        })
+        .catch((error) => {
+            dispatch({type: "FETCH_USERS_ERROR", payload: error})
+        })
+    //do something async
+});
 
 
 
-const middleware = applyMiddleware(logger, error);
-
-const store = createStore(reducer, 0, middleware);
-
-store.subscribe(() => {
-    console.log("Store Changed", store.getState());
-})
-
-store.dispatch({type: "INC", payload: 1});
-store.dispatch({type: "INC", payload: 2});
-store.dispatch({type: "INC", payload: 3});
-store.dispatch({type: "INC", payload: 4});
-store.dispatch({type: "INC", payload: 1});
-store.dispatch({type: "DEC", payload: 1});
-store.dispatch({type: "E", payload: 1});
 
 
-
+//---------------------------------
 function Test() {
-    console.log("Test");
+    console.log("Running end");
 
     return (
         <div>        
