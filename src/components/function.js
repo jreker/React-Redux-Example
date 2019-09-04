@@ -6,6 +6,7 @@ import { applyMiddleware, createStore } from 'redux';
 import {createLogger} from 'redux-logger';
 import thunk from "redux-thunk";
 import Axios from 'axios';
+import { createPromise } from 'redux-promise-middleware';
 //import { composeWithDevTools } from 'redux-devtools-extension';
 
 
@@ -20,13 +21,13 @@ const initialState = {
 //change state
 const reducer = function(state=initialState, action) {
     switch(action.type) {
-        case "FETCH_USERS_START": {
+        case "FETCH_USERS_PENDING": {
             return {...state, fetching: true}
             break;
-        }case "FETCH_USERS_RECIEVED": {
+        }case "FETCH_USERS_REJECTED": {
             return {...state, fetching: false, fetched: true, users: action.payload}
             break;
-        }case "FETCH_USERS_ERROR": {
+        }case "FETCH_USERS_FULFILLED": {
             return {...state, fetching: false, error: action.payload}
             break;
         }
@@ -35,23 +36,15 @@ const reducer = function(state=initialState, action) {
 }
 
 
-const middleware = applyMiddleware(thunk, createLogger());
+const middleware = applyMiddleware(createPromise(), thunk, createLogger());
 const store = createStore(reducer, middleware);
 
 
 //Asynchronous calls from thunks
-store.dispatch((dispatch) => {
-    dispatch({type: "FETCH_USERS_START"})
-    Axios.get("http://rest.learncode.academy/api/wstern/users")
-        .then((response) => {
-            dispatch({type: "FETCH_USERS_RECIEVED", payload: response.data})
-        })
-        .catch((error) => {
-            dispatch({type: "FETCH_USERS_ERROR", payload: error})
-        })
-    //do something async
+store.dispatch({
+    type: "FETCH_USERS",
+    payload: Axios.get("http://resdt.learncode.academy/api/wstern/users")
 });
-
 
 
 
