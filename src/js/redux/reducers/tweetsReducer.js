@@ -1,5 +1,14 @@
 export default function reducer(state={
-    tweets:[],
+    tweets:[{
+        id: 1,
+        text: "My first tweet",
+        time: "01.01.2019 12:00"
+    },
+    {
+        id: 2,
+        text: "My second tweet",
+        time: "01.01.2019 12:00"
+    }],
     fetching: false,
     fetched: false,
     error: null
@@ -27,7 +36,7 @@ export default function reducer(state={
             }
         }
         case "UPDATE_TWEET": {
-            const {id, text} = action.payload;
+            const {id} = action.payload;
             const newTweets = [...state.tweets];
             const tweetToUpdate = newTweets.findIndex(tweet => tweet.id === id) 
             newTweets[tweetToUpdate]  = action.payload;
@@ -42,6 +51,8 @@ export default function reducer(state={
                 tweets: state.tweets.filter(tweet => tweet.id !== action.payload)
             }
         }
+        default: {
+            return state;
+        }
     }   
-    return state;
 }

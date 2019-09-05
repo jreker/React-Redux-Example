@@ -8,15 +8,42 @@
   pointer-events: none;
 }
 
-.App-header {
+.hr {
+  width: 100%;
+}
+hr {
+  width: 90%;
+}
+
+button{
+  font-size: 0.8em;
+  background-color: #61dafb;
+  border: #61dafb;
+  margin-left: 5px;
+}
+button:active {
+  background-color: #b5efff;
+}
+
+input {
+  font-size: 1.0em;
+}
+body {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 1.1em;
   color: white;
+}
+.table, tr, td {
+  margin-top: 10px;
+  text-align: left;
+  border: 2px solid #b5efff;
+  border-collapse: collapse;
+  padding: 5px;
 }
 
 .App-link {

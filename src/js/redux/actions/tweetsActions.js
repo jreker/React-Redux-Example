@@ -16,17 +16,18 @@ export function fetchTweets() {
     }
 }
 
-export function addTweet() {
+export function addTweet(id, text, time) {
     return {
         type: "ADD_TWEET",
         payload: {
-            id, 
-            text
+            id,
+            text,
+            time
         }
     }
 }
 
-export function updateTweet() {
+export function updateTweet(id, text) {
     return {
         type: "UPDATE_TWEET",
         payload: {

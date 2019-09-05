@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
 import {connect} from "react-redux";
-import { fetchUser, setUserName } from './redux/actions/userActions';
+import { fetchUser, setUserName } from '../redux/actions/userActions';
 import UserViewer from './UserViewer';
 
 const mapStateTouser = state => {
