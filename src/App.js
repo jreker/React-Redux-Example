@@ -15,7 +15,10 @@ function App() {
       <body>
       <User/>
         <hr/>
-        <TweetsInput id="3"/> //Example with custom Prop injected to connect component
+       { 
+         //Example with custom Prop injected to connect component 
+       }
+        <TweetsInput id="3"/> 
         <Tweets/>
       </body>
     </div>
