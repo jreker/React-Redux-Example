@@ -7,7 +7,6 @@ const UserViewer = ({user, setUserName, fetchUser}) => {
     useEffect(() => {
         fetchUser();
      },[fetchUser]) //EMPTY ARRAY TO RUN IT ON LOAD AND UNLOAD // OR YOU CAN SPECIFY A VARIABLE AND EFFECT WILL RUN EVERYTIME WHEN THE VARIABLE CHANGES
-   
     return (
         //With inline css styles as example
         <div>        

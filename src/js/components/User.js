@@ -1,4 +1,4 @@
-import {connect} from "react-redux";
+import {connect, useSelector} from "react-redux";
 import { fetchUser, setUserName } from '../redux/actions/userActions';
 import UserViewer from './UserViewer';
 
@@ -7,6 +7,7 @@ const mapStateTouser = state => {
         user: state.user.user
     }
 }
+
 const mapDispatchTouser = dispatch => {
     return {
         setUserName: (name) => dispatch(setUserName(name)),
